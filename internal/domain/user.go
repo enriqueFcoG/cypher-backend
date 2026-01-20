@@ -12,4 +12,5 @@ type User struct {
 	State    string
 	City     string
 	IDCrew   string
+	Crew     *Crew
 }
