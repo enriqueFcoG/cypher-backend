@@ -22,6 +22,6 @@ func (s *BeatService) CreateBeat(title string) error {
 	return s.Repo.Save(beat)
 }
 
-func (s *BeatService) GetBear(id string) (*domain.Beat, error) {
+func (s *BeatService) GetBeat(id string) (*domain.Beat, error) {
 	return s.Repo.FindByID(id)
 }
