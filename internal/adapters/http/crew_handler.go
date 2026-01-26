@@ -12,6 +12,7 @@ type CrewHandler struct {
 }
 
 func (h *CrewHandler) Create(c *gin.Context) {
+	ctx := c.Request.Context()
 	var req struct {
 		Title string `json:"string"`
 	}
@@ -19,7 +20,7 @@ func (h *CrewHandler) Create(c *gin.Context) {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
-	err := h.Service.CreateCrew(req.Title)
+	err := h.Service.CreateCrew(ctx, req.Title)
 
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
@@ -30,8 +31,9 @@ func (h *CrewHandler) Create(c *gin.Context) {
 }
 
 func (h *CrewHandler) Get(c *gin.Context) {
+	ctx := c.Request.Context()
 	id := c.Param("id")
-	user, err := h.Service.GetCrew(id)
+	user, err := h.Service.GetCrew(ctx, id)
 	if err != nil {
 		c.JSON(404, gin.H{"error": "not found"})
 		return

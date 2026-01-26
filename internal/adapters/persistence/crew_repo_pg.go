@@ -1,26 +1,39 @@
 package persistence
 
 import (
-	"database/sql"
+	"context"
 	"enriqueFcoG/cypher/internal/domain"
+
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type CrewRepoPG struct {
-	DB *sql.DB
+	pool *pgxpool.Pool
 }
 
-func (r *CrewRepoPG) Save(u *domain.Crew) error {
-	_, error := r.DB.Exec("INSERT INTO CREW (ID, UserName) values($1,$2)", u.ID, u.Name)
-	return error
+func NewCrewRepoPG(pool *pgxpool.Pool) *CrewRepoPG {
+	return &CrewRepoPG{pool: pool}
 }
 
-func (r *CrewRepoPG) FindByID(id string) (*domain.Crew, error) {
-	row := r.DB.QueryRow("SELECT ID, UserName FROM CREW WHERE ID = $1", id)
-	u := &domain.Crew{}
-	err := row.Scan(&u.ID, &u.Name)
+func (r *CrewRepoPG) Save(ctx context.Context, c *domain.Crew) error {
+	query := `INSERT INTO CREW (Name) values($1)`
+	err := r.pool.QueryRow(ctx, query, c.Name).Scan(&c.Name)
 	if err != nil {
-		return nil, err
+		return err
+	}
+	return nil
+}
+
+func (r *CrewRepoPG) FindByID(ctx context.Context, id string) (*domain.Crew, error) {
+	var crew domain.Crew
+	query := `SELECT ID, Name FROM CREW WHERE ID = $1`
+	err := r.pool.QueryRow(ctx, query, id).Scan(
+		&crew.Name,
+	)
+
+	if err != nil {
+		return nil, nil
 	}
 
-	return u, nil
+	return &crew, nil
 }

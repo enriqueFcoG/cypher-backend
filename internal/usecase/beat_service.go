@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"context"
 	"enriqueFcoG/cypher/internal/domain"
 	"enriqueFcoG/cypher/internal/ports"
 )
@@ -9,7 +10,7 @@ type BeatService struct {
 	Repo ports.BeatRepository
 }
 
-func (s *BeatService) CreateBeat(title string) error {
+func (s *BeatService) CreateBeat(ctx context.Context, title string) error {
 	beat := &domain.Beat{
 		Title:     title,
 		Producer:  "string",
@@ -19,9 +20,9 @@ func (s *BeatService) CreateBeat(title string) error {
 		IDType:    "string",
 	}
 
-	return s.Repo.Save(beat)
+	return s.Repo.Save(ctx, beat)
 }
 
-func (s *BeatService) GetBeat(id string) (*domain.Beat, error) {
-	return s.Repo.FindByID(id)
+func (s *BeatService) GetBeat(ctx context.Context, id string) (*domain.Beat, error) {
+	return s.Repo.FindByID(ctx, id)
 }

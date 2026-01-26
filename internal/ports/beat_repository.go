@@ -1,8 +1,11 @@
 package ports
 
-import "enriqueFcoG/cypher/internal/domain"
+import (
+	"context"
+	"enriqueFcoG/cypher/internal/domain"
+)
 
 type BeatRepository interface {
-	Save(b *domain.Beat) error
-	FindByID(id string) (*domain.Beat, error)
+	Save(ctx context.Context, b *domain.Beat) error
+	FindByID(ctx context.Context, id string) (*domain.Beat, error)
 }

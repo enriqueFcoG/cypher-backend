@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"context"
 	"enriqueFcoG/cypher/internal/domain"
 	"enriqueFcoG/cypher/internal/ports"
 )
@@ -9,14 +10,14 @@ type CrewService struct {
 	Repo ports.CrewRepository
 }
 
-func (s *CrewService) CreateCrew(name string) error {
+func (s *CrewService) CreateCrew(ctx context.Context, name string) error {
 	newCrew := domain.Crew{
 		Name: name,
 	}
 
-	return s.Repo.Save(&newCrew)
+	return s.Repo.Save(ctx, &newCrew)
 }
 
-func (s *CrewService) GetCrew(id string) (*domain.Crew, error) {
-	return s.Repo.FindByID(id)
+func (s *CrewService) GetCrew(ctx context.Context, id string) (*domain.Crew, error) {
+	return s.Repo.FindByID(ctx, id)
 }

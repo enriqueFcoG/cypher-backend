@@ -1,26 +1,39 @@
 package persistence
 
 import (
-	"database/sql"
+	"context"
 	"enriqueFcoG/cypher/internal/domain"
+
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type BeatTypeRepoPG struct {
-	DB *sql.DB
+	pool *pgxpool.Pool
 }
 
-func (r *BeatTypeRepoPG) Save(u *domain.BeatType) error {
-	_, error := r.DB.Exec("INSERT INTO BEATTYPE (ID, UserName) values($1,$2)", u.ID, u.Name)
-	return error
+func NewBeatTypeRepoPG(pool *pgxpool.Pool) *BeatTypeRepoPG {
+	return &BeatTypeRepoPG{pool: pool}
 }
 
-func (r *BeatTypeRepoPG) FindByID(id string) (*domain.BeatType, error) {
-	row := r.DB.QueryRow("SELECT ID, UserName FROM BEATTYPE WHERE ID = $1", id)
-	u := &domain.BeatType{}
-	err := row.Scan(&u.ID, &u.Name)
+func (r *BeatTypeRepoPG) Save(ctx context.Context, bt *domain.BeatType) error {
+	query := `INSERT INTO BEATTYPE (Name) values($1) RETURNING Name`
+	err := r.pool.QueryRow(ctx, query, bt.Name).Scan(&bt.Name)
 	if err != nil {
-		return nil, err
+		return err
+	}
+	return nil
+}
+
+func (r *BeatTypeRepoPG) FindByID(ctx context.Context, id string) (*domain.BeatType, error) {
+	var beat_type domain.BeatType
+	query := `SELECT ID, Name FROM BEATTYPE WHERE ID = $1`
+	err := r.pool.QueryRow(ctx, query, id).Scan(
+		&beat_type.Name,
+	)
+
+	if err != nil {
+		return nil, nil
 	}
 
-	return u, nil
+	return &beat_type, nil
 }

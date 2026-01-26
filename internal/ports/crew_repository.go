@@ -1,8 +1,11 @@
 package ports
 
-import "enriqueFcoG/cypher/internal/domain"
+import (
+	"context"
+	"enriqueFcoG/cypher/internal/domain"
+)
 
 type CrewRepository interface {
-	Save(c *domain.Crew) error
-	FindByID(id string) (*domain.Crew, error)
+	Save(ctx context.Context, c *domain.Crew) error
+	FindByID(ctx context.Context, id string) (*domain.Crew, error)
 }
