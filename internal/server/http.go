@@ -2,6 +2,7 @@ package server
 
 import (
 	"enriqueFcoG/cypher/internal/adapters/http"
+	"enriqueFcoG/cypher/internal/config"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,7 +18,8 @@ type Handlers struct {
 	User          *http.UserHandler
 }
 
-func NewHTTPServer(handler *Handlers) *gin.Engine {
+// config added as param for future implementations
+func NewHTTPServer(cfg config.Config, handler *Handlers) *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Recovery(), gin.Logger())
 
