@@ -26,9 +26,9 @@ func (r *BeatRepoPG) Save(ctx context.Context, b *domain.Beat) error {
 
 func (r *BeatRepoPG) FindByID(ctx context.Context, id string) (*domain.Beat, error) {
 	var beat domain.Beat
-	query := `SELECT ID, Name FROM BEAT WHERE ID = $1`
+	query := `SELECT ID FROM BEAT WHERE ID = $1`
 	err := r.pool.QueryRow(ctx, query, id).Scan(
-		&beat.Type.Name,
+		&beat.ID,
 	)
 
 	if err != nil {

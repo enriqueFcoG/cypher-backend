@@ -1,6 +1,9 @@
 package config
 
-import "os"
+import (
+	"log"
+	"os"
+)
 
 type Config struct {
 	Env      string
@@ -10,9 +13,28 @@ type Config struct {
 
 func Load() Config {
 	cfg := Config{
-		Env:      os.Getenv("APP_ENV"),
-		Port:     os.Getenv("APP_PORT"),
-		Database: os.Getenv("APP_DATABASE"),
+		Env:      getEnv("APP_ENV", "dev"),
+		Port:     getEnv("APP_PORT", "8081"),
+		Database: mustGetEnv("APP_DATABASE"),
 	}
 	return cfg
+}
+
+func getEnv(key string, default_val string) string {
+	val := os.Getenv(key)
+
+	if val == "" {
+		return default_val
+	}
+	return val
+}
+
+func mustGetEnv(key string) string {
+	val := os.Getenv(key)
+
+	if val == "" {
+		log.Fatalf("error getting value with key %s", key)
+	}
+
+	return val
 }
