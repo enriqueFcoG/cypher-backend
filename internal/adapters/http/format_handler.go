@@ -12,6 +12,7 @@ type FormatHandler struct {
 }
 
 func (h *FormatHandler) Create(c *gin.Context) {
+	ctx := c.Request.Context()
 	var req struct {
 		Title string `json:"string"`
 	}
@@ -19,7 +20,7 @@ func (h *FormatHandler) Create(c *gin.Context) {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
-	err := h.Service.CreateFormat(req.Title)
+	err := h.Service.CreateFormat(ctx, req.Title)
 
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
@@ -30,8 +31,9 @@ func (h *FormatHandler) Create(c *gin.Context) {
 }
 
 func (h *FormatHandler) Get(c *gin.Context) {
+	ctx := c.Request.Context()
 	id := c.Param("id")
-	user, err := h.Service.GetFormat(id)
+	user, err := h.Service.GetFormat(ctx, id)
 	if err != nil {
 		c.JSON(404, gin.H{"error": "not found"})
 		return

@@ -1,26 +1,39 @@
 package persistence
 
 import (
-	"database/sql"
+	"context"
 	"enriqueFcoG/cypher/internal/domain"
+
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type ModRepoPG struct {
-	DB *sql.DB
+	pool *pgxpool.Pool
 }
 
-func (r *ModRepoPG) Save(u *domain.Mod) error {
-	_, error := r.DB.Exec("INSERT INTO MOD (ID) values($1)", u.ID)
-	return error
+func NewModRepoPG(pool *pgxpool.Pool) *ModRepoPG {
+	return &ModRepoPG{pool: pool}
 }
 
-func (r *ModRepoPG) FindByID(id string) (*domain.Mod, error) {
-	row := r.DB.QueryRow("SELECT ID, UserName FROM MOD WHERE ID = $1", id)
-	u := &domain.Mod{}
-	err := row.Scan(&u.ID, &u.ID)
+func (r *ModRepoPG) Save(ctx context.Context, m *domain.Mod) error {
+	query := `INSERT INTO MOD (ID) values($1)`
+	err := r.pool.QueryRow(ctx, query, m.ID).Scan(&m.ID)
 	if err != nil {
-		return nil, err
+		return err
+	}
+	return nil
+}
+
+func (r *ModRepoPG) FindByID(ctx context.Context, id string) (*domain.Mod, error) {
+	var mod domain.Mod
+	query := `SELECT ID FROM MOD WHERE ID = $1`
+	err := r.pool.QueryRow(ctx, query, id).Scan(
+		&mod.ID,
+	)
+
+	if err != nil {
+		return nil, nil
 	}
 
-	return u, nil
+	return &mod, nil
 }

@@ -1,8 +1,11 @@
 package ports
 
-import "enriqueFcoG/cypher/internal/domain"
+import (
+	"context"
+	"enriqueFcoG/cypher/internal/domain"
+)
 
 type ModRepository interface {
-	Save(m *domain.Mod) error
-	FindByID(id string) (*domain.Mod, error)
+	Save(ctx context.Context, m *domain.Mod) error
+	FindByID(ctx context.Context, id string) (*domain.Mod, error)
 }

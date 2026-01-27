@@ -12,6 +12,7 @@ type UserHandler struct {
 }
 
 func (h *UserHandler) Create(c *gin.Context) {
+	ctx := c.Request.Context()
 	var req struct {
 		ID    string `json:"id"`
 		Email string `json:"string"`
@@ -20,7 +21,7 @@ func (h *UserHandler) Create(c *gin.Context) {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
-	err := h.Service.CreateUser(req.ID, req.Email)
+	err := h.Service.CreateUser(ctx, req.ID, req.Email)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
@@ -30,8 +31,9 @@ func (h *UserHandler) Create(c *gin.Context) {
 }
 
 func (h *UserHandler) Get(c *gin.Context) {
+	ctx := c.Request.Context()
 	id := c.Param("id")
-	user, err := h.Service.GetUser(id)
+	user, err := h.Service.GetUser(ctx, id)
 	if err != nil {
 		c.JSON(404, gin.H{"error": "not found"})
 		return

@@ -1,9 +1,12 @@
 package ports
 
-import "enriqueFcoG/cypher/internal/domain"
+import (
+	"context"
+	"enriqueFcoG/cypher/internal/domain"
+)
 
 type UserRepository interface {
-	Save(u *domain.User) error
-	FindByID(id string) (*domain.User, error)
+	Save(ctx context.Context, u *domain.User) error
+	FindByID(ctx context.Context, id string) (*domain.User, error)
 	//Update(u *domain.User) (*domain.User, error)
 }

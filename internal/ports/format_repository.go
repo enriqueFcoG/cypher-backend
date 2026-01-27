@@ -1,8 +1,11 @@
 package ports
 
-import "enriqueFcoG/cypher/internal/domain"
+import (
+	"context"
+	"enriqueFcoG/cypher/internal/domain"
+)
 
 type FormatRepository interface {
-	Save(f *domain.Format) error
-	FindByID(id string) (*domain.Format, error)
+	Save(ctx context.Context, f *domain.Format) error
+	FindByID(ctx context.Context, id string) (*domain.Format, error)
 }

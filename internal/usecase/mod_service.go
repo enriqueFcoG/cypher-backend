@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"context"
 	"enriqueFcoG/cypher/internal/domain"
 	"enriqueFcoG/cypher/internal/ports"
 )
@@ -9,11 +10,11 @@ type ModService struct {
 	Repo ports.ModRepository
 }
 
-func (s *ModService) CreateMod(name string) error {
+func (s *ModService) CreateMod(ctx context.Context, name string) error {
 	newMod := domain.Mod{}
-	return s.Repo.Save(&newMod)
+	return s.Repo.Save(ctx, &newMod)
 }
 
-func (s *ModService) GetMod(id string) (*domain.Mod, error) {
-	return s.Repo.FindByID(id)
+func (s *ModService) GetMod(ctx context.Context, id string) (*domain.Mod, error) {
+	return s.Repo.FindByID(ctx, id)
 }
