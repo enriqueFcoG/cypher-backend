@@ -10,6 +10,13 @@ type CrewService struct {
 	Repo ports.CrewRepository
 }
 
+func NewCrewService(repo ports.CrewRepository) *CrewService {
+	if repo == nil {
+		panic("CrewRepository is nill")
+	}
+	return &CrewService{Repo: repo}
+}
+
 func (s *CrewService) CreateCrew(ctx context.Context, name string) error {
 	newCrew := domain.Crew{
 		Name: name,

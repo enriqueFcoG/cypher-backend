@@ -49,30 +49,14 @@ func BuildServer(cfg config.Config) *gin.Engine {
 	userRepo := persistence.NewUserRepoPG(pool)
 
 	// services / usecases
-	beatService := &usecase.BeatService{
-		Repo: beatRepo,
-	}
-	beatTypeService := &usecase.BeatTypeService{
-		Repo: beatTypeRepo,
-	}
-	crewService := &usecase.CrewService{
-		Repo: crewRepo,
-	}
-	formatDetailsService := &usecase.FormatDetailsService{
-		Repo: formatDetailsRepo,
-	}
-	formatService := &usecase.FormatService{
-		Repo: formatRepo,
-	}
-	historyService := &usecase.HistoryService{
-		Repo: historyRepo,
-	}
-	modService := &usecase.ModService{
-		Repo: modRepo,
-	}
-	userService := &usecase.UserService{
-		Repo: userRepo,
-	}
+	beatService := usecase.NewBeatService(beatRepo)
+	beatTypeService := usecase.NewBeatTypeService(beatTypeRepo)
+	crewService := usecase.NewCrewService(crewRepo)
+	formatDetailsService := usecase.NewFormatDetailsService(formatDetailsRepo)
+	formatService := usecase.NewFormatService(formatRepo)
+	historyService := usecase.NewHistoryService(historyRepo)
+	modService := usecase.NewModService(modRepo)
+	userService := usecase.NewUserService(userRepo)
 
 	// //handlers
 	beatHandler := &httpadapter.BeatHandler{

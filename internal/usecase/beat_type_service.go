@@ -10,6 +10,13 @@ type BeatTypeService struct {
 	Repo ports.BeatTypeRepository
 }
 
+func NewBeatTypeService(repo ports.BeatTypeRepository) *BeatTypeService {
+	if repo == nil {
+		panic("BeatTypeRepository is nill")
+	}
+	return &BeatTypeService{Repo: repo}
+}
+
 func (s *BeatTypeService) CreateBeatType(ctx context.Context, title string) error {
 	beatType := &domain.BeatType{
 		Name: title,

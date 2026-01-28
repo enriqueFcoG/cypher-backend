@@ -10,6 +10,13 @@ type UserService struct {
 	Repo ports.UserRepository
 }
 
+func NewUserService(repo ports.UserRepository) *UserService {
+	if repo == nil {
+		panic("UserRepository is nill")
+	}
+	return &UserService{Repo: repo}
+}
+
 func (s *UserService) CreateUser(ctx context.Context, id, username string) error {
 	user := &domain.User{
 		ID:       id,

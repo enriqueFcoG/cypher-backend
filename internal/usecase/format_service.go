@@ -10,6 +10,12 @@ type FormatService struct {
 	Repo ports.FormatRepository
 }
 
+func NewFormatService(repo ports.FormatRepository) *FormatService {
+	if repo == nil {
+		panic("FormatRepository is nill")
+	}
+	return &FormatService{Repo: repo}
+}
 func (s *FormatService) CreateFormat(ctx context.Context, name string) error {
 	newFormat := domain.Format{}
 

@@ -10,6 +10,13 @@ type HistoryService struct {
 	Repo ports.HistoryRepository
 }
 
+func NewHistoryService(repo ports.HistoryRepository) *HistoryService {
+	if repo == nil {
+		panic("HistoryRepository is nill")
+	}
+	return &HistoryService{Repo: repo}
+}
+
 func (s *HistoryService) CreateHistory(ctx context.Context, name string) error {
 	newHistory := domain.History{}
 

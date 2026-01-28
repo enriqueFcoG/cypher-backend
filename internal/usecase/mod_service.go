@@ -10,6 +10,12 @@ type ModService struct {
 	Repo ports.ModRepository
 }
 
+func NewModService(repo ports.ModRepository) *ModService {
+	if repo == nil {
+		panic("ModRepository is nill")
+	}
+	return &ModService{Repo: repo}
+}
 func (s *ModService) CreateMod(ctx context.Context, name string) error {
 	newMod := domain.Mod{}
 	return s.Repo.Save(ctx, &newMod)
