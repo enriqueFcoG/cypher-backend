@@ -11,6 +11,10 @@ type HistoryHandler struct {
 	Service *usecase.HistoryService
 }
 
+func NewHistoryHandler(service *usecase.HistoryService) *HistoryHandler {
+	return &HistoryHandler{Service: service}
+}
+
 func (h *HistoryHandler) Create(c *gin.Context) {
 	ctx := c.Request.Context()
 	var req struct {

@@ -11,6 +11,10 @@ type BeatHandler struct {
 	Service *usecase.BeatService
 }
 
+func NewBeatHandler(service *usecase.BeatService) BeatHandler {
+	return BeatHandler{Service: service}
+}
+
 func (h *BeatHandler) Create(c *gin.Context) {
 	ctx := c.Request.Context()
 

@@ -11,6 +11,10 @@ type CrewHandler struct {
 	Service *usecase.CrewService
 }
 
+func NewCrewHandler(service *usecase.CrewService) *CrewHandler {
+	return &CrewHandler{Service: service}
+}
+
 func (h *CrewHandler) Create(c *gin.Context) {
 	ctx := c.Request.Context()
 	var req struct {

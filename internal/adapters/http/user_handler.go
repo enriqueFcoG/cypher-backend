@@ -11,6 +11,10 @@ type UserHandler struct {
 	Service *usecase.UserService
 }
 
+func NewUserHandler(service *usecase.UserService) *UserHandler {
+	return &UserHandler{Service: service}
+}
+
 func (h *UserHandler) Create(c *gin.Context) {
 	ctx := c.Request.Context()
 	var req struct {

@@ -11,6 +11,10 @@ type BeatTypeHandler struct {
 	Service *usecase.BeatTypeService
 }
 
+func NewBeatTypeHandler(service *usecase.BeatTypeService) *BeatTypeHandler {
+	return &BeatTypeHandler{Service: service}
+}
+
 func (h *BeatTypeHandler) Create(c *gin.Context) {
 	ctx := c.Request.Context()
 	var req struct {

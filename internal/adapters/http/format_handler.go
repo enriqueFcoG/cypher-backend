@@ -11,6 +11,10 @@ type FormatHandler struct {
 	Service *usecase.FormatService
 }
 
+func NewFormatHandler(service *usecase.FormatService) *FormatHandler {
+	return &FormatHandler{Service: service}
+}
+
 func (h *FormatHandler) Create(c *gin.Context) {
 	ctx := c.Request.Context()
 	var req struct {

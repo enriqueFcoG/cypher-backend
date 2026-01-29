@@ -11,6 +11,10 @@ type ModHandler struct {
 	Service *usecase.ModService
 }
 
+func NewModHandler(service *usecase.ModService) *ModHandler {
+	return &ModHandler{Service: service}
+}
+
 func (h *ModHandler) Create(c *gin.Context) {
 	ctx := c.Request.Context()
 	var req struct {
