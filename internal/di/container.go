@@ -59,30 +59,14 @@ func BuildServer(cfg config.Config) *gin.Engine {
 	userService := usecase.NewUserService(userRepo)
 
 	// //handlers
-	beatHandler := &httpadapter.BeatHandler{
-		Service: beatService,
-	}
-	beatTypeHandler := &httpadapter.BeatTypeHandler{
-		Service: beatTypeService,
-	}
-	crewHandler := &httpadapter.CrewHandler{
-		Service: crewService,
-	}
-	formatDetailsHandler := &httpadapter.FormatDetailsHandler{
-		Service: formatDetailsService,
-	}
-	formatHandler := &httpadapter.FormatHandler{
-		Service: formatService,
-	}
-	historyHandler := &httpadapter.HistoryHandler{
-		Service: historyService,
-	}
-	modHandler := &httpadapter.ModHandler{
-		Service: modService,
-	}
-	userHandler := &httpadapter.UserHandler{
-		Service: userService,
-	}
+	beatHandler := httpadapter.NewBeatHandler(beatService)
+	beatTypeHandler := httpadapter.NewBeatTypeHandler(beatTypeService)
+	crewHandler := httpadapter.NewCrewHandler(crewService)
+	formatDetailsHandler := httpadapter.NewFormatDetailsHandler(formatDetailsService)
+	formatHandler := httpadapter.NewFormatHandler(formatService)
+	historyHandler := httpadapter.NewHistoryHandler(historyService)
+	modHandler := httpadapter.NewModHandler(modService)
+	userHandler := httpadapter.NewUserHandler(userService)
 
 	//router
 	handlers := &server.Handlers{
